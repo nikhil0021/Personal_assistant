@@ -1,6 +1,9 @@
 import datetime
 import speech_recognition as sr
 import pyttsx3
+import webbrowser
+import wikipedia
+import os
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -45,4 +48,37 @@ def takecommand():
 
 if __name__ == '__main__':
     wishme()
-    takecommand()
+    while True:
+        query = takecommand().lower()
+
+        if 'wikipedia' in query:
+            speak('Searching wikipedia...')
+            query = query.replace('wikipedia', '')
+            result = wikipedia.summary(query, sentences=2)
+            print(result)
+            speak('According to wikipedia')
+
+        elif 'open youtube' in query:
+            webbrowser.open('https://www.youtube.com/')
+
+        elif 'open whatsapp' in query:
+            webbrowser.open('https://web.whatsapp.com/')
+
+        elif 'open gmail' in query:
+            webbrowser.open('https://mail.google.com/mail/?tab=rm')
+
+        elif 'play music' in query:
+            music = 'C:\\Users\\HP\\Music'
+            songs = os.listdir(music)
+            os.startfile(os.path.join(music, songs[0]))
+
+        elif 'the time' in query:
+            time = datetime.datetime.now().strftime('%H:%M:%S')
+            speak(f'Sir, the time is {time}')
+
+        elif 'study folder' in query:
+            path = 'E:\\study\\sem8'
+            os.startfile(path)
+
+        elif 'quit' in query:
+            exit()
